@@ -10,7 +10,7 @@ const items = [
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 w-full max-w-[430px] bg-white border-t z-50">
+    <nav className="app-bottom-nav bg-white border-t rounded-t-3xl">
       <div className="h-16 flex justify-around items-center">
         {items.map(({ to, icon: Icon, label }) => (
           <NavLink
