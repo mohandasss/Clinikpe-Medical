@@ -49,7 +49,7 @@ export default function BasicDetails() {
       className="min-h-screen px-2 flex flex-col"
       style={{ backgroundColor: "#F8FAFC" }}
     >
-      <header className="py-2 w-full">
+      <header className="py-2 mt-12 w-full">
         {/* Top Icon / Logo */}
         <div className="flex flex-col items-center mb-1">
           <img src={logo} alt="ClinicPe" className="h-20 mb-1" />
@@ -69,7 +69,7 @@ export default function BasicDetails() {
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center w-full overflow-auto">
+      <main className="flex-1 flex items-center justify-center w-full">
         {/* Card */}
         <div
           className="rounded-lg p-0 w-full max-w-mobile mx-auto flex flex-col"
@@ -193,7 +193,7 @@ export default function BasicDetails() {
       </main>
 
       {/* Bottom Action Section (button sits lower) */}
-      <div className="w-full px-2 pb-4 mt-2">
+      <div className="w-full mb-12 px-2 pb-4 mt-2">
         <div className="max-w-mobile mx-auto">
           <Button
             type="button"
