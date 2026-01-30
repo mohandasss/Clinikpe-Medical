@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================= */
+/* GLOBAL RESET & MOBILE BASICS */
+/* ============================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* ============================= */
+/* BODY = MOBILE APP FEEL */
+/* ============================= */
+
+body {
+  font-family: 'Poppins', 'Metropolis', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  background-color: #f8fafc;
+  color: #0f172a;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+/* ============================= */
+/* ROOT FRAME (MOBILE WIDTH) */
+/* ============================= */
+
+#root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.app-frame {
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+/* ============================= */
+/* SCROLL STRATEGY */
+/* ============================= */
+
+.app-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-header,
+.app-bottom-nav {
+  flex-shrink: 0;
+}
+
+/* ============================= */
+/* TOUCH & FORM DEFAULTS */
+/* ============================= */
+
+button {
+  min-height: 44px;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  width: 100%;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* ============================= */
+/* LINKS */
+/* ============================= */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ============================= */
+/* SAFE AREA (CAPACITOR) */
+/* ============================= */
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ============================= */
+/* MANTINE INPUT STYLING */
+/* ============================= */
+
+.mantine-Input-input {
+  height: 48px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  background-color: #ffffff;
+  font-size: 14px;
+}
+
+.mantine-Input-input:focus {
+  border-color: #2563eb;
+}
+
+.mantine-Input-input[data-error="true"] {
+  border-color: #dc2626;
+}
+
+.mantine-Input-input:disabled {
+  background-color: #f9fafb;
+}
+
+/* ============================= */
+/* UTILITY CLASSES */
+/* ============================= */
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
