@@ -1,15 +1,35 @@
-import { Button, TextInput, PinInput } from "@mantine/core";
+import { Button, PinInput } from "@mantine/core";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocation } from "react-router-dom";
 import logo from "../../assets/Logo.svg";
 import { colors } from "../../Constants/colors";
 import { otpSchema, type OTPFormValues } from "./schemas";
 import { useState, useEffect } from "react";
+import { useRequestOtp } from "./hooks/useRequestOtp";
+import { useVerifyOtp } from "./hooks/useVerifyOtp";
+import { useDeviceType } from "../../GlobalHooks/useDeviceType";
+import { useDeviceId } from "../../GlobalHooks/useDeviceId";
+
+interface LocationState {
+  otp_id: string;
+  requestId: string;
+  phoneNumber: string;
+}
 
 export default function OtpVerifyPage() {
+  const location = useLocation();
+  const { otp_id, requestId, phoneNumber } =
+    (location.state as LocationState) || {
+      phoneNumber: "",
+      otp_id: "",
+      requestId: "",
+    };
+  const deviceType = useDeviceType();
+  const deviceId = useDeviceId();
   const [timeLeft, setTimeLeft] = useState(26);
-  const [canResend, setCanResend] = useState(false);
-  const phoneNumber = "+91-xxxxxxx1234"; // Mock - should come from previous step
+  const { mutate: requestOtp } = useRequestOtp();
+  const { mutate: verifyOtp, isLoading: isVerifying } = useVerifyOtp();
 
   const {
     control,
@@ -20,24 +40,40 @@ export default function OtpVerifyPage() {
     mode: "onSubmit",
   });
 
+  const canResend = timeLeft === 0;
+
   useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    } else {
-      setCanResend(true);
+    if (timeLeft <= 0) {
+      return;
     }
+
+    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+    return () => clearTimeout(timer);
   }, [timeLeft]);
 
   const onSubmit = async (data: OTPFormValues) => {
-    console.log("OTP:", data.otp);
-    // TODO: Call verifyOTP function
+    verifyOtp({
+      emailMobile: "91" + phoneNumber,
+      request_id: requestId,
+      otp_id: otp_id,
+      otp: data.otp,
+      device_type: deviceType || "web",
+      device_id: deviceId || "",
+      frontend_type: "app",
+    });
   };
 
   const handleResend = () => {
     setTimeLeft(26);
-    setCanResend(false);
-    // TODO: Call resendOTP function
+
+    // Call the login API again to resend OTP
+
+    requestOtp({
+      emailMobile: "91" + phoneNumber,
+      device_type: deviceType,
+      device_id: deviceId || "",
+      frontend_type: "app",
+    });
   };
 
   return (
@@ -51,7 +87,6 @@ export default function OtpVerifyPage() {
       </div>
 
       {/* Tagline */}
-    
 
       {/* Card */}
       <div className="rounded-lg p-0 w-full max-w-mobile mx-auto">
@@ -70,14 +105,14 @@ export default function OtpVerifyPage() {
         >
           We have sent a 6-digit OTP to <br />
           <span style={{ color: colors.black, fontWeight: "600" }}>
-            {phoneNumber}
+            +91{phoneNumber}
           </span>
         </p>
 
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* OTP Input */}
-          <div className="flex justify-center">
+          <div className="flex  justify-center">
             <Controller
               name="otp"
               control={control}
@@ -88,8 +123,8 @@ export default function OtpVerifyPage() {
                   type="number"
                   size="lg"
                   radius="md"
-                  placeholder="0"
-                  gap="md"
+                  placeholder=""
+                  gap={4}
                   error={!!errors.otp}
                   styles={{
                     input: {
@@ -144,8 +179,10 @@ export default function OtpVerifyPage() {
               color: colors.white,
               padding: "12px",
             }}
+            loading={isVerifying}
+            disabled={isVerifying}
           >
-            Verify & Continue
+            {isVerifying ? "Verifying..." : "Verify & Continue"}
           </Button>
         </form>
       </div>

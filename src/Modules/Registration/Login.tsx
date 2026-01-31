@@ -4,8 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import logo from "../../assets/Logo.svg";
 import { colors } from "../../Constants/colors";
 import { phoneSchema, type PhoneFormValues } from "./schemas";
+import { useRequestOtp } from "./hooks/useRequestOtp";
+import { useDeviceId } from "../../GlobalHooks/useDeviceId";
+import { useDeviceType } from "../../GlobalHooks/useDeviceType";
 
 export default function LoginPage() {
+  const deviceId = useDeviceId();
+  const deviceType = useDeviceType();
+  const { mutate: requestOtp, isLoading } = useRequestOtp();
+
   const {
     register,
     handleSubmit,
@@ -15,9 +22,17 @@ export default function LoginPage() {
     mode: "onSubmit",
   });
 
-  const onSubmit = async (data: PhoneFormValues) => {
-    console.log("+91" + data.phoneNumber);
-    // TODO: Call sendOTP function
+  const onSubmit = (data: PhoneFormValues) => {
+    // Construct payload
+    const payload = {
+      emailMobile: "91" + data.phoneNumber,
+      device_type: deviceType || "mobile",
+      device_id: deviceId || "unknown",
+      frontend_type: "app",
+    };
+
+    // Call API through hook (toast will be handled in hook)
+    requestOtp(payload);
   };
 
   return (
@@ -26,24 +41,22 @@ export default function LoginPage() {
       style={{ backgroundColor: "#F8FAFC" }}
     >
       {/* Logo Section */}
-      <div className="flex flex-col items-center mb-2">
-        <img src={logo} alt="ClinicPe" className="h-20 mb-1" />
-        
+      <div className="mb-8 ">
+        <div className="flex flex-col items-center ">
+          <img src={logo} alt="ClinicPe" className="h-20 mb-1" />
+        </div>
+
+        {/* Medical Store Access */}
+        <h2
+          className="text-2xl font-bold text-center mb-12"
+          style={{ color: colors.black }}
+        >
+          Medical Store Access
+        </h2>
       </div>
 
-      {/* Medical Store Access */}
-      <h2
-        className="text-2xl font-bold text-center mb-28"
-        style={{ color: colors.black }}
-      >
-        Medical Store Access
-      </h2>
-
       {/* Card */}
-      <div
-        className="rounded-lg p-0 w-full max-w-mobile mx-auto"
-      
-      >
+      <div className="rounded-lg p-0 w-full max-w-mobile mx-auto">
         {/* Heading */}
         <h1
           className="text-md font-semibold mb-2 text-center"
@@ -67,19 +80,15 @@ export default function LoginPage() {
             <div
               className="flex items-center px-3 rounded-l-md border"
               style={{
-                
                 borderColor: "#E5E7EB",
               }}
             >
-              <span
-                className="font-medium"
-                style={{ color: colors.black }}
-              >
+              <span className="font-medium" style={{ color: colors.black }}>
                 +91
               </span>
             </div>
             <TextInput
-            size="lg"
+              size="lg"
               placeholder="Enter phone number"
               className="flex-1 w-full"
               classNames={{
@@ -93,6 +102,7 @@ export default function LoginPage() {
                   borderLeft: "none",
                 },
               }}
+              disabled={isLoading || !deviceId}
             />
           </div>
 
@@ -101,14 +111,16 @@ export default function LoginPage() {
             type="submit"
             fullWidth
             radius="md"
-            className=" font-semibold"
+            className="font-semibold"
             style={{
               backgroundColor: colors.primary,
               color: colors.white,
               padding: "12px",
             }}
+            loading={isLoading}
+            disabled={isLoading || !deviceId}
           >
-            Send OTP
+            {isLoading ? "Sending OTP..." : "Send OTP"}
           </Button>
         </form>
 
@@ -119,6 +131,9 @@ export default function LoginPage() {
         >
           No passwords. Secure OTP based login.
         </p>
+
+        {/* Device Info Debug (Dev only) */}
+        
       </div>
     </div>
   );

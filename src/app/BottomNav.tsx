@@ -1,11 +1,11 @@
-import { Home, FileText, ShoppingCart, User } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const items = [
-  { to: "/", icon: Home, label: "Home" },
-  { to: "/orders", icon: FileText, label: "Orders" },
-  { to: "/cart", icon: ShoppingCart, label: "Cart" },
-  { to: "/profile", icon: User, label: "Profile" },
+  { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+  { to: "/appointments", icon: Calendar, label: "Appointments" },
+  { to: "/providers", icon: Users, label: "Providers" },
+  { to: "/settings", icon: Settings, label: "Settings" },
 ];
 
 export default function BottomNav() {
@@ -18,7 +18,7 @@ export default function BottomNav() {
             to={to}
             className={({ isActive }) =>
               `flex flex-col items-center text-xs ${
-                isActive ? "text-accent" : "text-gray-400"
+                isActive ? "text-primary" : "text-gray-400"
               }`
             }
           >

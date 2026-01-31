@@ -80,7 +80,7 @@ const Appointments = () => {
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 text-sm"
           />
         </div>
         <button className="p-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
@@ -89,7 +89,7 @@ const Appointments = () => {
       </div>
 
       {/* Filter Chips */}
-      <div className="mb-6">
+      <div className="mb-2">
         <FilterChips
           filters={doctors}
           activeTab={activeDoctor}

@@ -20,14 +20,14 @@ const QRCodePage: React.FC<QRCodePageProps> = ({
   };
 
   // Mock QR code pattern (simple grid)
-  const mockQRPattern = Array(21).fill(null).map(() => 
-    Array(21).fill(null).map(() => Math.random() > 0.5)
-  );
+  // const mockQRPattern = Array(21).fill(null).map(() => 
+  //   Array(21).fill(null).map(() => Math.random() > 0.5)
+  // );
 
   return (
     <div className="w-full px-0">
       {/* QR Code Card */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-6 mt-6">
+      <div className="bg-white rounded-2xl border border-gray-200 p-4 space-y-6 mt-0">
         {/* Store Info */}
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold text-gray-900">{storeName}</h1>
@@ -35,14 +35,14 @@ const QRCodePage: React.FC<QRCodePageProps> = ({
         </div>
 
         {/* Mock QR Code Display */}
-        <div className="flex justify-center bg-gray-50 rounded-lg p-6">
+        <div className="flex justify-center bg-gray-50 rounded-lg p-2">
           <img className="w-64 h-64 object-contain " src="https://hexdocs.pm/qr_code/2.2.1/docs/qrcode.svg" alt="" />
           <h1></h1>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="space-y-3 mt-6">
+      <div className="space-y-3 mt-4">
         {/* Download Button */}
         <button
           onClick={handleDownload}

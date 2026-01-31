@@ -67,7 +67,7 @@ const Providers = () => {
   };
 
   return (
-    <div className="w-full relative pb-20">
+    <div className="w-full relative ">
       {/* Search Bar */}
       <div className="flex gap-2 mb-6">
         <div className="flex-1 relative">

@@ -1,49 +1,52 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useFormContext, Controller } from "react-hook-form";
 import { Camera } from "lucide-react";
-import { TextInput, Select, Stack } from "@mantine/core";
-import SetAvailability from "./SetAvailability";
-import { colors } from "../../../Constants/colors";
-
-interface ProviderFormData {
-  fullName: string;
-  specialization: string;
-  experience: string;
-  degree: string;
-  consultationFee: string;
-}
+import { TextInput, Stack, Loader, Select } from "@mantine/core";
+import { useImageUpload } from "../hooks/useImageUpload";
+import { useSpecialities } from "../hooks/useSpecialities";
+import type { ProviderFormType } from "../schemas/provider.schema";
+import type { SpecialityResponse } from "../../../Apis/modules/master/speciality.types";
 
 interface ProviderFormProps {
-  onSubmit?: (data: ProviderFormData, image: File | null) => void;
+  isSubmitting?: boolean;
 }
 
-export default function ProviderForm({ onSubmit }: ProviderFormProps) {
-  const [formData, setFormData] = useState<ProviderFormData>({
-    fullName: "",
-    specialization: "",
-    experience: "",
-    degree: "",
-    consultationFee: "",
-  });
+export default function ProviderForm({
+  isSubmitting = false,
+}: ProviderFormProps) {
+  const { control } = useFormContext<ProviderFormType>();
   const [profileImage, setProfileImage] = useState<File | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
 
-  const specializations = [
-    { value: "cardiologist", label: "Cardiologist" },
-    { value: "dermatologist", label: "Dermatologist" },
-    { value: "neurologist", label: "Neurologist" },
-    { value: "orthopedic", label: "Orthopedic" },
-    { value: "pediatrician", label: "Pediatrician" },
-    { value: "psychiatrist", label: "Psychiatrist" },
-  ];
+  const { mutate: uploadImage, isLoading: isUploadingImage } = useImageUpload({
+    onSuccess: (data) => {
+      setProfileImageUrl(data.fileUrl);
+    },
+  });
 
-  const handleFormChange = (field: keyof ProviderFormData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const {
+    data: specialities,
+    isLoading: isLoadingSpecialities,
+    error: specialityError,
+  } = useSpecialities();
 
-  const handleSubmit = () => {
-    onSubmit?.(formData, profileImage);
+  const specializations = specialities.map((item: SpecialityResponse) => ({
+    value: item.uid,
+    label: item.name,
+  }));
+  console.log("Specializations:", specializations);
+  console.log("Speciality Error:", specialityError);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (file) {
+      setProfileImage(file);
+
+      // Upload image
+      const formData = new FormData();
+      formData.append("file", file);
+      uploadImage({ payload: formData, purpose: "provider-profile" });
+    }
   };
 
   return (
@@ -51,108 +54,143 @@ export default function ProviderForm({ onSubmit }: ProviderFormProps) {
       {/* Profile Picture Upload */}
       <div className="flex flex-col items-center space-y-2">
         <div className="w-20 h-20 rounded-full bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center relative overflow-hidden cursor-pointer hover:bg-gray-200 transition">
-          {profileImage ? (
+          {profileImageUrl ? (
+            <img
+              src={profileImageUrl}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          ) : profileImage ? (
             <img
               src={URL.createObjectURL(profileImage)}
               alt="Profile"
               className="w-full h-full object-cover"
             />
           ) : (
-            <Camera size={24} className="text-gray-400" />
+            <div className="flex flex-col items-center justify-center">
+              {isUploadingImage ? (
+                <Loader size={24} className="text-blue-500 animate-spin" />
+              ) : (
+                <Camera size={24} className="text-gray-400" />
+              )}
+            </div>
           )}
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setProfileImage(e.currentTarget.files?.[0] || null)}
+            onChange={handleImageChange}
+            disabled={isUploadingImage || isSubmitting}
             className="absolute inset-0 opacity-0 cursor-pointer"
           />
         </div>
         <p className="text-xs text-gray-500">Optional</p>
+        {isUploadingImage && (
+          <p className="text-xs text-blue-500">Uploading...</p>
+        )}
       </div>
 
       {/* Form Fields */}
-      <Stack spacing="sm">
-        <TextInput
-          label="Full Name"
-          placeholder="e.g. Dr. John Doe"
-          value={formData.fullName}
-          onChange={(e) => handleFormChange("fullName", e.currentTarget.value)}
-          radius="md"
-          size="lg"
-          classNames={{
-            label: "text-sm font-medium text-gray-900 mb-1",
-          }}
+      <Stack gap="sm">
+        <Controller
+          name="fullName"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              label="Full Name"
+              placeholder="e.g. Dr. John Doe"
+              {...field}
+              radius="md"
+              size="lg"
+              error={error?.message}
+              disabled={isSubmitting}
+              classNames={{
+                label: "text-sm font-medium text-gray-900 mb-1",
+              }}
+            />
+          )}
         />
 
-        <Select
-          label="Specialization"
-          placeholder="Select specialization"
-          data={specializations}
-          value={formData.specialization}
-          onChange={(value) =>
-            handleFormChange("specialization", value || "")
-          }
-          radius="md"
-          size="lg"
-          classNames={{
-            label: "text-sm font-medium text-gray-900 mb-1",
-          }}
+        <Controller
+          name="specialization"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <Select
+              label="Specialization"
+              placeholder="Select specialization"
+              data={specializations}
+              {...field}
+              radius="md"
+              size="lg"
+              error={error?.message}
+              disabled={isLoadingSpecialities}
+              classNames={{
+                label: "text-sm font-medium text-gray-900 mb-1",
+              }}
+            />
+          )}
         />
 
         <div className="grid grid-cols-2 gap-3">
-          <TextInput
-            label="Experience"
-            placeholder="e.g. 8+ Years"
-            value={formData.experience}
-            onChange={(e) =>
-              handleFormChange("experience", e.currentTarget.value)
-            }
-            radius="md"
-            size="lg"
-            classNames={{
-              label: "text-sm font-medium text-gray-900 mb-1",
-            }}
+          <Controller
+            name="experience"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextInput
+                label="Experience"
+                placeholder="e.g. 8+ Years"
+                {...field}
+                radius="md"
+                size="lg"
+                error={error?.message}
+                disabled={isSubmitting}
+                classNames={{
+                  label: "text-sm font-medium text-gray-900 mb-1",
+                }}
+              />
+            )}
           />
-          <TextInput
-            label="Degree"
-            placeholder="e.g. MBBS, MD"
-            value={formData.degree}
-            onChange={(e) => handleFormChange("degree", e.currentTarget.value)}
-            radius="md"
-            size="lg"
-            classNames={{
-              label: "text-sm font-medium text-gray-900 mb-1",
-            }}
+          <Controller
+            name="degree"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <TextInput
+                label="Degree"
+                placeholder="e.g. MBBS, MD"
+                {...field}
+                radius="md"
+                size="lg"
+                error={error?.message}
+                disabled={isSubmitting}
+                classNames={{
+                  label: "text-sm font-medium text-gray-900 mb-1",
+                }}
+              />
+            )}
           />
         </div>
 
-        <TextInput
-          label="Consultation Fee"
-          placeholder="500"
-          leftSection="₹"
-          value={formData.consultationFee}
-          onChange={(e) =>
-            handleFormChange("consultationFee", e.currentTarget.value)
-          }
-          radius="md"
-          size="lg"
-          classNames={{
-            label: "text-sm font-medium text-gray-900 mb-1",
-          }}
+        <Controller
+          name="consultationFee"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextInput
+              label="Consultation Fee"
+              placeholder="500"
+              leftSection="₹"
+              {...field}
+              radius="md"
+              size="lg"
+              error={error?.message}
+              disabled={isSubmitting}
+              classNames={{
+                label: "text-sm font-medium text-gray-900 mb-1",
+              }}
+            />
+          )}
         />
       </Stack>
-
-      {/* Submit Button */}
-      {/* <button
-        onClick={handleSubmit}
-        className="w-full py-3 rounded-lg text-white font-medium text-sm transition hover:opacity-90"
-        style={{ backgroundColor: colors.primary }}
-      >
-        Add Provider
-      </button> */}
-
-      {/* Set Availability Component */}
-      
     </div>
   );
 }
+
+export { type ProviderFormType };

@@ -15,29 +15,48 @@ export const routeMeta: Record<string, RouteMeta> = {
     header: 'none',
     showBottomNav: false,
   },
+  '/splash': {
+    header: 'none',
+    showBottomNav: false,
+  },
   '/dashboard': {
     header: 'main',
     title: 'Dashboard',
     showBottomNav: true,
   },
-  '/assignments': {
+  '/appointments': {
     header: 'main',
-    title: 'Assignments',
+    title: 'Appointments',
     showBottomNav: true,
   },
-  '/assignments/:id': {
+  '/add-appointment': {
     header: 'back',
-    title: 'Assignment Details',
+    title: 'Add Appointment',
     showBottomNav: true,
   },
-  '/assignments/:id/add-test': {
+  '/appointments/:id': {
     header: 'back',
-    title: 'Add Test',
+    title: 'Appointment Details',
     showBottomNav: true,
   },
-  '/profile': {
+  '/providers': {
+    header: 'main',
+    title: 'Providers',
+    showBottomNav: true,
+  },
+  '/add-provider': {
     header: 'back',
-    title: 'Profile',
+    title: 'Add Provider',
+    showBottomNav: true,
+  },
+  '/providers/add': {
+    header: 'back',
+    title: 'Add Provider',
+    showBottomNav: true,
+  },
+  '/providers/:id': {
+    header: 'back',
+    title: 'Provider Details',
     showBottomNav: true,
   },
   '/settings': {
@@ -45,25 +64,20 @@ export const routeMeta: Record<string, RouteMeta> = {
     title: 'Settings',
     showBottomNav: true,
   },
+  '/profile': {
+    header: 'back',
+    title: 'Profile',
+    showBottomNav: true,
+  },
   '/help-support': {
     header: 'back',
     title: 'Help / Support',
     showBottomNav: true,
   },
-  '/payments': {
+  '/qr-code': {
     header: 'back',
-    title: 'Payments',
+    title: 'QR Code',
     showBottomNav: true,
-  },
-  '/history': {
-    header: 'back',
-    title: 'History',
-    showBottomNav: true,
-  },
-  '/map-view': {
-    header: 'back',
-    title: 'Map View',
-    showBottomNav: false,
   },
 };
 

@@ -193,7 +193,7 @@ export default function BasicDetails() {
       </main>
 
       {/* Bottom Action Section (button sits lower) */}
-      <div className="w-full mb-12 px-2 pb-4 mt-2">
+      <div className="w-full mb-12 px-0 pb-4 mt-2">
         <div className="max-w-mobile mx-auto">
           <Button
             type="button"

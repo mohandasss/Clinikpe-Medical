@@ -65,7 +65,7 @@ export default function ProviderCard({
           onChange={(event) =>
             onToggleActive?.(provider.id, event.currentTarget.checked)
           }
-          color="green"
+          color="#0D52AF"
           size="md"
         />
       </div>

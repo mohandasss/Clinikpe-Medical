@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Clock, Plus } from "lucide-react";
 import { colors } from "../../../Constants/colors";
 
@@ -37,27 +37,27 @@ export default function SetAvailability({ onSave }: SetAvailabilityProps) {
           return { ...slot, days: newDays };
         }
         return slot;
-      })
+      }),
     );
   };
 
   const handleTimeChange = (
     slotId: string,
     type: "startTime" | "endTime",
-    value: string
+    value: string,
   ) => {
     setSlots((prev) =>
       prev.map((slot) =>
-        slot.id === slotId ? { ...slot, [type]: value } : slot
-      )
+        slot.id === slotId ? { ...slot, [type]: value } : slot,
+      ),
     );
   };
 
   const handleDurationChange = (slotId: string, value: number | string) => {
     setSlots((prev) =>
       prev.map((slot) =>
-        slot.id === slotId ? { ...slot, duration: Number(value) } : slot
-      )
+        slot.id === slotId ? { ...slot, duration: Number(value) } : slot,
+      ),
     );
   };
 
@@ -93,20 +93,25 @@ export default function SetAvailability({ onSave }: SetAvailabilityProps) {
       {/* Slots */}
       <div className="space-y-4">
         {slots.map((slot) => (
-          <div key={slot.id} className="border border-gray-200 rounded-lg p-3 space-y-3">
+          <div
+            key={slot.id}
+            className="border border-gray-200 rounded-lg p-3 space-y-3"
+          >
             {/* Days Selection */}
             <div className="grid grid-cols-7 gap-2">
               {DAYS.map((day, dayIndex) => (
                 <button
                   key={day + dayIndex}
                   onClick={() => handleDayToggle(slot.id, day)}
-                  className={`w-full h-10 rounded-full font-medium text-sm transition flex items-center justify-center ${
+                  className={`w-full h-10 px-5 rounded-full font-medium text-sm transition flex items-center justify-center ${
                     slot.days.includes(day)
                       ? "border-2 text-white"
                       : "border-2 border-gray-300 text-gray-600 hover:border-gray-400"
                   }`}
                   style={{
-                    borderColor: slot.days.includes(day) ? colors.primary : undefined,
+                    borderColor: slot.days.includes(day)
+                      ? colors.primary
+                      : undefined,
                     backgroundColor: slot.days.includes(day)
                       ? colors.primary
                       : "white",
@@ -118,21 +123,23 @@ export default function SetAvailability({ onSave }: SetAvailabilityProps) {
             </div>
 
             {/* Time & Duration Section */}
-            <div className="flex gap-2 items-end">
+            <div className="flex gap-2 items-center  ">
               {/* Duration */}
               <div className="flex-shrink-0">
                 <label className="text-xs font-medium text-gray-600 block mb-1">
                   Duration
                 </label>
-                <div className="flex items-center gap-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                <div className="flex items-center gap-1 px-2 py-2 border border-gray-300 rounded-lg bg-gray-50">
                   <Clock size={16} className="text-gray-600" />
                   <input
                     type="number"
                     min="5"
                     step="5"
                     value={slot.duration}
-                    onChange={(e) => handleDurationChange(slot.id, e.target.value)}
-                    className="w-12 bg-transparent text-sm font-medium outline-none text-gray-900"
+                    onChange={(e) =>
+                      handleDurationChange(slot.id, e.target.value)
+                    }
+                    className="w-6 bg-transparent text-sm font-medium outline-none text-gray-900"
                   />
                   <span className="text-xs text-gray-600">m</span>
                 </div>
@@ -146,8 +153,10 @@ export default function SetAvailability({ onSave }: SetAvailabilityProps) {
                 <input
                   type="time"
                   value={slot.startTime}
-                  onChange={(e) => handleTimeChange(slot.id, "startTime", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-blue-600 focus:outline-none focus:border-blue-500"
+                  onChange={(e) =>
+                    handleTimeChange(slot.id, "startTime", e.target.value)
+                  }
+                  className="w-full max-w-[110px] px-1 py-2 border border-gray-300 rounded-lg text-sm font-medium text-blue-600 focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -159,8 +168,10 @@ export default function SetAvailability({ onSave }: SetAvailabilityProps) {
                 <input
                   type="time"
                   value={slot.endTime}
-                  onChange={(e) => handleTimeChange(slot.id, "endTime", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-blue-600 focus:outline-none focus:border-blue-500"
+                  onChange={(e) =>
+                    handleTimeChange(slot.id, "endTime", e.target.value)
+                  }
+                  className="w-full max-w-[110px] px-1 py-2 border border-gray-300 rounded-lg text-sm font-medium text-blue-600 focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>

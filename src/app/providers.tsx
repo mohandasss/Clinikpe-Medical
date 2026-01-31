@@ -1,8 +1,8 @@
-import { MantineProvider } from '@mantine/core';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Toaster } from 'react-hot-toast';
-import { mantineTheme } from './provider/mantineTheme';
-import { toasterConfig } from './provider/toaster.config';
+import { MantineProvider } from "@mantine/core";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+import { mantineTheme } from "./provider/mantineTheme";
+import { toasterConfig } from "./provider/toaster.config";
 
 // Create QueryClient instance
 const queryClient = new QueryClient({
