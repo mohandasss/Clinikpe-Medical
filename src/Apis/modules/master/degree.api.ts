@@ -3,7 +3,7 @@ import type { DegreeResponse } from "./degree.types";
 
 export function getDegree() {
     return apiRequest<DegreeResponse>({
-        url: "doctor/master/degree",
+        url: "doctor/master/qualification",
         method: "get",
     });
 }

@@ -7,7 +7,6 @@ import { useSpecialities } from "../hooks/useSpecialities";
 import { useGetExperience } from "../hooks/useGetExperience";
 import { useGetDegree } from "../hooks/useGetDegree";
 import type { ProviderFormType } from "../schemas/provider.schema";
-import type { SpecialityResponse } from "../../../Apis/modules/master/speciality.types";
 
 interface ProviderFormProps {
   isSubmitting?: boolean;
@@ -26,11 +25,8 @@ export default function ProviderForm({
     },
   });
 
-  const {
-    data: specialities,
-    isLoading: isLoadingSpecialities,
-    error: specialityError,
-  } = useSpecialities();
+  const { data: specialities, isLoading: isLoadingSpecialities } =
+    useSpecialities();
 
   // Fetch experience data
   const {
@@ -45,26 +41,29 @@ export default function ProviderForm({
     isLoading: isLoadingDegree,
     error: degreeError,
   } = useGetDegree();
-
+  console.log("Degree Data in Form:", degreeData);
   // Prepare select options
-  const specializations = specialities.map((item: SpecialityResponse) => ({
+  const specializations = specialities.map((item) => ({
     value: item.uid,
     label: item.name,
   }));
 
   // Prepare experience options
-  const experiences =
-    experienceData?.map((item) => ({
+  const experiences = experienceData.map(
+    (item: (typeof experienceData)[number]) => ({
       value: item.name,
       label: item.name,
-    })) || [];
+    }),
+  );
 
   // Prepare degree options
-  const degrees =
-    degreeData?.map((item) => ({
+  const degrees = degreeData?.data.map(
+    (item: (typeof degreeData)[number]) => ({
       value: item.name,
       label: item.name,
-    })) || [];
+    }),
+  );
+  
 
   // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
