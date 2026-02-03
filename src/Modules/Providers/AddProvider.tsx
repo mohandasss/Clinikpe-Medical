@@ -41,6 +41,7 @@ const AddProvider = () => {
 
   const { handleSubmit, reset } = methods;
 
+  // Mutations for adding and inviting providers
   const addProviderMutation = useAddProvider({
     onSuccess: (data) => {
       toast.success(`Provider ${data.fullName} added successfully`);
@@ -51,6 +52,7 @@ const AddProvider = () => {
     },
   });
 
+  // Mutations for inviting providers
   const inviteProviderMutation = useInviteProvider({
     onSuccess: (data) => {
       toast.success(`Invitation sent to ${data.email}`);
@@ -61,6 +63,7 @@ const AddProvider = () => {
     },
   });
 
+  // Form submission handler
   const onSubmit = (data: AddProviderFormType) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { invite, ...providerData } = data;
@@ -70,6 +73,7 @@ const AddProvider = () => {
     });
   };
 
+  // Invite handler
   const handleSendInvite = () => {
     const email = methods.getValues("invite.email");
     if (email) {
@@ -77,6 +81,7 @@ const AddProvider = () => {
     }
   };
 
+  // Determine if any mutation is in progress
   const isSubmitting =
     addProviderMutation.isPending || inviteProviderMutation.isPending;
 

@@ -4,6 +4,8 @@ import { Camera } from "lucide-react";
 import { TextInput, Stack, Loader, Select } from "@mantine/core";
 import { useImageUpload } from "../hooks/useImageUpload";
 import { useSpecialities } from "../hooks/useSpecialities";
+import { useGetExperience } from "../hooks/useGetExperience";
+import { useGetDegree } from "../hooks/useGetDegree";
 import type { ProviderFormType } from "../schemas/provider.schema";
 import type { SpecialityResponse } from "../../../Apis/modules/master/speciality.types";
 
@@ -30,13 +32,41 @@ export default function ProviderForm({
     error: specialityError,
   } = useSpecialities();
 
+  // Fetch experience data
+  const {
+    data: experienceData,
+    isLoading: isLoadingExperience,
+    error: experienceError,
+  } = useGetExperience();
+
+  // Fetch degree data
+  const {
+    data: degreeData,
+    isLoading: isLoadingDegree,
+    error: degreeError,
+  } = useGetDegree();
+
+  // Prepare select options
   const specializations = specialities.map((item: SpecialityResponse) => ({
     value: item.uid,
     label: item.name,
   }));
-  console.log("Specializations:", specializations);
-  console.log("Speciality Error:", specialityError);
 
+  // Prepare experience options
+  const experiences =
+    experienceData?.map((item) => ({
+      value: item.name,
+      label: item.name,
+    })) || [];
+
+  // Prepare degree options
+  const degrees =
+    degreeData?.map((item) => ({
+      value: item.name,
+      label: item.name,
+    })) || [];
+
+  // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (file) {
@@ -135,14 +165,20 @@ export default function ProviderForm({
             name="experience"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <TextInput
+              <Select
                 label="Experience"
-                placeholder="e.g. 8+ Years"
+                placeholder={
+                  isLoadingExperience ? "Loading..." : "Select experience"
+                }
+                data={experiences}
                 {...field}
                 radius="md"
                 size="lg"
-                error={error?.message}
-                disabled={isSubmitting}
+                error={
+                  error?.message ||
+                  (experienceError ? "Failed to load experiences" : undefined)
+                }
+                disabled={isLoadingExperience || isSubmitting}
                 classNames={{
                   label: "text-sm font-medium text-gray-900 mb-1",
                 }}
@@ -153,14 +189,18 @@ export default function ProviderForm({
             name="degree"
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <TextInput
+              <Select
                 label="Degree"
-                placeholder="e.g. MBBS, MD"
+                placeholder={isLoadingDegree ? "Loading..." : "Select degree"}
+                data={degrees}
                 {...field}
                 radius="md"
                 size="lg"
-                error={error?.message}
-                disabled={isSubmitting}
+                error={
+                  error?.message ||
+                  (degreeError ? "Failed to load degrees" : undefined)
+                }
+                disabled={isLoadingDegree || isSubmitting}
                 classNames={{
                   label: "text-sm font-medium text-gray-900 mb-1",
                 }}
