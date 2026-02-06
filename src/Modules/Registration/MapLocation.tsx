@@ -1,13 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { API_KEY } from "../../KEY";
 import { Button, TextInput, Group, Card } from "@mantine/core";
-import { LineSquiggle, Locate, SquareArrowOutUpRight, ChevronLeft, Search } from "lucide-react";
+import { ChevronLeft, Search } from "lucide-react";
 import { TrafficCone, Moon, XCircle } from "lucide-react";
 import LocationConfirmDrawer from "./LocationConfirmDrawer";
 
 declare global {
   interface Window {
-    google: any;
+    google: {
+      maps: {
+        Map: any;
+        Marker: any;
+        DirectionsRenderer: any;
+        DirectionsService: any;
+        TrafficLayer: any;
+        Geocoder: any;
+        LatLngBounds: any;
+        SymbolPath: any;
+        TravelMode: any;
+        places: {
+          AutocompleteService: any;
+          PlacesService: any;
+          PlacesServiceStatus: any;
+        };
+        GeocoderStatus: any;
+      };
+    };
   }
 }
 
@@ -42,25 +60,23 @@ const loadGoogleMaps = (apiKey: string): Promise<void> => {
 };
 
 export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
-  const mapRef = useRef<google.maps.Map | null>(null);
+  const mapRef = useRef<any>(null);
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const userMarkerRef = useRef<google.maps.Marker | null>(null);
+  // const userMarkerRef = useRef<any>(null);
 
   const watchIdRef = useRef<number | null>(null);
 
-  const directionsRendererRef = useRef<google.maps.DirectionsRenderer | null>(
-    null,
-  );
+  const directionsRendererRef = useRef<any>(null);
 
-  const trafficLayerRef = useRef<google.maps.TrafficLayer | null>(null);
-  const centerMarkerRef = useRef<google.maps.Marker | null>(null);
+  const trafficLayerRef = useRef<any>(null);
+  const centerMarkerRef = useRef<any>(null);
   const geocoderRef = useRef<any>(null);
 
-  const [userLocation, setUserLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  // const [userLocation, setUserLocation] = useState<{
+  //   lat: number;
+  //   lng: number;
+  // } | null>(null);
 
   const [traffic, setTraffic] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -74,7 +90,7 @@ export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
     lng: number;
     name?: string;
   } | null>({ lat, lng, name: `${lat}, ${lng}` });
-  const [showConfirmDrawer, setShowConfirmDrawer] = useState(true);
+  const [, setShowConfirmDrawer] = useState(true);
 
   const autocompleteServiceRef = useRef<any>(null);
   const placesServiceRef = useRef<any>(null);
@@ -166,67 +182,67 @@ export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
   }, [lat, lng, apiKeyInput]);
 
   /* Live Location */
-  const startTrackingLocation = () => {
-    if (!navigator.geolocation) return;
+  // const startTrackingLocation = () => {
+  //   if (!navigator.geolocation) return;
 
-    watchIdRef.current = navigator.geolocation.watchPosition(
-      (pos) => {
-        const coords = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-        };
+  //   watchIdRef.current = navigator.geolocation.watchPosition(
+  //     (pos) => {
+  //       const coords = {
+  //         lat: pos.coords.latitude,
+  //         lng: pos.coords.longitude,
+  //       };
 
-        setUserLocation(coords);
+  //       setUserLocation(coords);
 
-        if (!userMarkerRef.current) {
-          userMarkerRef.current = new window.google.maps.Marker({
-            position: coords,
-            map: mapRef.current,
-            title: "You",
-            icon: {
-              path: window.google.maps.SymbolPath.CIRCLE,
-              scale: 6,
-              fillColor: "#10b981",
-              fillOpacity: 1,
-              strokeColor: "#fff",
-              strokeWeight: 2,
-            },
-          });
-        } else {
-          userMarkerRef.current.setPosition(coords);
-        }
+  //       if (!userMarkerRef.current) {
+  //         userMarkerRef.current = new window.google.maps.Marker({
+  //           position: coords,
+  //           map: mapRef.current,
+  //           title: "You",
+  //           icon: {
+  //             path: window.google.maps.SymbolPath.CIRCLE,
+  //             scale: 6,
+  //             fillColor: "#10b981",
+  //             fillOpacity: 1,
+  //             strokeColor: "#fff",
+  //             strokeWeight: 2,
+  //           },
+  //         });
+  //       } else {
+  //         userMarkerRef.current.setPosition(coords);
+  //       }
 
-        mapRef.current?.panTo(coords);
-      },
-      () => alert("Location permission denied"),
-      { enableHighAccuracy: true },
-    );
-  };
+  //       mapRef.current?.panTo(coords);
+  //     },
+  //     () => alert("Location permission denied"),
+  //     { enableHighAccuracy: true },
+  //   );
+  // };
 
   /* Route */
-  const drawRoute = () => {
-    if (!userLocation) return;
+  // const drawRoute = () => {
+  //   if (!userLocation) return;
 
-    const service = new window.google.maps.DirectionsService();
+  //   const service = new window.google.maps.DirectionsService();
 
-    service.route(
-      {
-        origin: userLocation,
-        destination: { lat, lng },
-        travelMode: window.google.maps.TravelMode.DRIVING,
-      },
-      (res: any, status: string) => {
-        if (status === "OK") {
-          directionsRendererRef.current.setDirections(res);
+  //   service.route(
+  //     {
+  //       origin: userLocation,
+  //       destination: { lat, lng },
+  //       travelMode: window.google.maps.TravelMode.DRIVING,
+  //     },
+  //     (res: any, status: string) => {
+  //       if (status === "OK") {
+  //         directionsRendererRef.current.setDirections(res);
 
-          const bounds = new window.google.maps.LatLngBounds();
-          bounds.extend(userLocation);
-          bounds.extend({ lat, lng });
-          mapRef.current.fitBounds(bounds);
-        }
-      },
-    );
-  };
+  //         const bounds = new window.google.maps.LatLngBounds();
+  //         bounds.extend(userLocation);
+  //         bounds.extend({ lat, lng });
+  //         mapRef.current.fitBounds(bounds);
+  //       }
+  //     },
+  //   );
+  // };
 
   /* Clear Route */
   const clearRoute = () => {
@@ -250,12 +266,12 @@ export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
   };
 
   /* External Navigation */
-  const openNavigation = () => {
-    window.open(
-      `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
-      "_blank",
-    );
-  };
+  // const openNavigation = () => {
+  //   window.open(
+  //     `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
+  //     "_blank",
+  //   );
+  // };
 
   /* Search Location */
   const handleSearchChange = (value: string) => {
@@ -389,10 +405,7 @@ export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
               type="password"
             />
             <Group justify="flex-end" mt="md">
-              <Button
-                variant="default"
-                onClick={() => setShowApiForm(false)}
-              >
+              <Button variant="default" onClick={() => setShowApiForm(false)}>
                 Cancel
               </Button>
               <Button
@@ -426,12 +439,12 @@ export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
         <div className="flex-1 relative">
           <div className="relative">
             <TextInput
-            size="lg"
+              size="lg"
               placeholder="Search location..."
               value={searchInput}
               onChange={(e) => handleSearchChange(e.currentTarget.value)}
-            leftSection={<Search size={18} />}
-              className="w-full"  
+              leftSection={<Search size={18} />}
+              className="w-full"
             />
 
             {/* Search Results Dropdown */}
@@ -443,7 +456,9 @@ export default function LocationMapView({ lat, lng, height = "99vh" }: Props) {
                     onClick={() => handleSelectLocation(result.place_id)}
                     className="p-3 hover:bg-gray-100 cursor-pointer border-b last:border-b-0 transition"
                   >
-                    <div className="font-medium text-sm">{result.main_text}</div>
+                    <div className="font-medium text-sm">
+                      {result.main_text}
+                    </div>
                     <div className="text-xs text-gray-500">
                       {result.secondary_text}
                     </div>

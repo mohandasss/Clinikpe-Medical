@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Search, Filter, Plus } from "lucide-react";
 import FilterChips from "../Dashboard/components/ScrollableChips";
 import AppointmentCard from "../Dashboard/components/AppointmentCard";

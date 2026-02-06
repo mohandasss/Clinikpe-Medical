@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DashboardStats from "./components/DashboardStats";
 import FilterChips from "./components/ScrollableChips";
 import AppointmentCard from "./components/AppointmentCard";
@@ -65,14 +65,16 @@ const Dashboard = () => {
   return (
     <div className="w-full space-y-2">
       <DashboardStats />
-      
+
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold text-lg">Recent Appointments</h3>
-          <button className="text-sm text-blue-600 hover:text-blue-800">see all</button>
+          <button className="text-sm text-blue-600 hover:text-blue-800">
+            see all
+          </button>
         </div>
 
-        <FilterChips 
+        <FilterChips
           filters={doctors}
           activeTab={activeDoctor}
           onCategoryChange={setActiveDoctor}
@@ -90,7 +92,7 @@ const Dashboard = () => {
           />
         ))}
       </div>
-    </div> 
+    </div>
   );
 };
 

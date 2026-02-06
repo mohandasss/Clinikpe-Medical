@@ -1,10 +1,12 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { TextInput, Button, Card, Alert } from '@mantine/core';
-import { AlertCircle, Edit2 } from 'lucide-react';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TextInput, Button, Card } from "@mantine/core";
+import { Edit2 } from "lucide-react";
 import logo from "../../assets/Logo.svg";
-import { storeDetailsSchema, type StoreDetailsFormData } from './storeDetailsSchema';
+import {
+  storeDetailsSchema,
+  type StoreDetailsFormData,
+} from "./storeDetailsSchema";
 
 const StoreDetails = () => {
   const {
@@ -12,21 +14,22 @@ const StoreDetails = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<StoreDetailsFormData>({
+  } = useForm({
     resolver: zodResolver(storeDetailsSchema),
     defaultValues: {
-      storeName: '',
-      ownerName: '',
-      phoneNumber: '+91 ',
-      address: '',
+      storeName: "",
+      ownerName: "",
+      phoneNumber: "+91 ",
+      address: "",
     },
-  });
+  } as any);
 
-  const addressValue = watch('address');
-  const defaultAddress = '95, Bireswar Chatterjee Street Near Jain Mandir Hapta Bazar, Bally Khal Bally, Howrah West Bengal - 711201';
+  const addressValue = watch("address");
+  const defaultAddress =
+    "95, Bireswar Chatterjee Street Near Jain Mandir Hapta Bazar, Bally Khal Bally, Howrah West Bengal - 711201";
 
   const onSubmit = (data: StoreDetailsFormData) => {
-    console.log('Form submitted:', data);
+    console.log("Form submitted:", data);
     // Handle form submission
   };
 
@@ -36,7 +39,6 @@ const StoreDetails = () => {
         {/* Logo Section */}
         <div className="text-center mb-6">
           <img src={logo} alt="ClinicPe" className="h-20 mb-2 mx-auto" />
-        
         </div>
 
         {/* Info Alert */}
@@ -53,20 +55,23 @@ const StoreDetails = () => {
         </div>
 
         {/* Form Fields */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form
+          onSubmit={handleSubmit((data: any) => onSubmit(data))}
+          className="space-y-5"
+        >
           {/* Store Name */}
           <div>
             <label className="block text-sm font-medium text-gray-900 mb-2">
               Store Name <span className="text-red-500">*</span>
             </label>
             <TextInput
-             size="md" 
-            radius="md"
+              size="md"
+              radius="md"
               placeholder="Enter your store name"
-              {...register('storeName')}
-              error={errors.storeName?.message}
+              {...register("storeName")}
+              error={errors.storeName?.message as unknown as string}
               classNames={{
-                input: 'border-gray-300 focus:border-blue-500',
+                input: "border-gray-300 focus:border-blue-500",
               }}
             />
           </div>
@@ -77,13 +82,13 @@ const StoreDetails = () => {
               Owner / Manager Name <span className="text-red-500">*</span>
             </label>
             <TextInput
-            size="md" 
-            radius="md"
+              size="md"
+              radius="md"
               placeholder="Enter owner / manager name"
-              {...register('ownerName')}
-              error={errors.ownerName?.message}
+              {...register("ownerName")}
+              error={errors.ownerName?.message as unknown as string}
               classNames={{
-                input: 'border-gray-300 focus:border-blue-500',
+                input: "border-gray-300 focus:border-blue-500",
               }}
             />
           </div>
@@ -95,16 +100,16 @@ const StoreDetails = () => {
             </label>
             <div className="relative">
               <TextInput
-               size="md" 
-            radius="md"
+                size="md"
+                radius="md"
                 placeholder="+91 8106664569"
-                {...register('phoneNumber')}
-                error={errors.phoneNumber?.message}
+                {...register("phoneNumber")}
+                error={errors.phoneNumber?.message as unknown as string}
                 classNames={{
-                  input: 'border-gray-300 focus:border-blue-500 pr-10',
+                  input: "border-gray-300 focus:border-blue-500 pr-10",
                 }}
               />
-              <button 
+              <button
                 type="button"
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
@@ -119,7 +124,7 @@ const StoreDetails = () => {
               <label className="text-sm font-medium text-gray-900">
                 Added Address
               </label>
-              <button 
+              <button
                 type="button"
                 className="text-blue-600 hover:text-blue-700"
               >
@@ -135,11 +140,11 @@ const StoreDetails = () => {
 
           {/* Get Store Access Button */}
           <Button
-          radius="md"
+            radius="md"
             type="submit"
             fullWidth
             size="lg"
-            style={{ backgroundColor: '#2563EB' }}
+            style={{ backgroundColor: "#2563EB" }}
             className="mt-8 font-semibold rounded-lg"
           >
             Get Store Access
@@ -148,7 +153,8 @@ const StoreDetails = () => {
 
         {/* Disclaimer Text */}
         <p className="text-xs text-gray-500 text-center mt-4">
-          No prescription or patient medical details are shared with medical store.
+          No prescription or patient medical details are shared with medical
+          store.
         </p>
       </Card>
     </div>

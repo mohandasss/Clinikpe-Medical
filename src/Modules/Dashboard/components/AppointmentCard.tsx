@@ -1,4 +1,3 @@
-import React from "react";
 import { Calendar, Briefcase, Phone, X, CheckCircle } from "lucide-react";
 
 interface AppointmentData {
@@ -52,7 +51,7 @@ export default function AppointmentCard({
         </div>
         <span
           className={`px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap ml-2 ${getStatusColor(
-            appointment.status
+            appointment.status,
           )}`}
         >
           {appointment.status}
@@ -64,7 +63,9 @@ export default function AppointmentCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-gray-700">
             <Calendar size={18} className="text-gray-600" />
-            <span className="text-sm">{appointment.date}, {appointment.time}</span>
+            <span className="text-sm">
+              {appointment.date}, {appointment.time}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             {/* <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center">
@@ -102,7 +103,7 @@ export default function AppointmentCard({
           className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-gray-400 text-gray-600 rounded-lg font-medium hover:bg-gray-50 transition"
         >
           <CheckCircle size={18} />
-           Complete
+          Complete
         </button>
       </div>
     </div>

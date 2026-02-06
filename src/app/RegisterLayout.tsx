@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import {BACKGROUND_COLOR} from "../Constants/colors.ts";
 const RegisterLayout = () => {
   return (
     <div className="app-frame">

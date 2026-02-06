@@ -17,14 +17,14 @@ import QRCodePage from "../Modules/QrCode/Qrcode";
 const AppContents = () => {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route element={<RegisterLayout />}>
         <Route path="/login" element={<Login />} />
         <Route path="/verify-otp" element={<OtpVerifyPage />} />
-        <Route path="/basic-details" element={<BasicDetails />}/>
+        <Route path="/basic-details" element={<BasicDetails />} />
         <Route path="/map-location" element={<MapLocation lat={0} lng={0} />} />
-       
+
         <Route path="/store-details" element={<StoreDetails />} />
-        
       </Route>
 
       <Route element={<AppLayout />}>
@@ -35,7 +35,12 @@ const AppContents = () => {
         <Route path="/providers" element={<Providers />} />
         <Route path="/add-provider" element={<AddProvider />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/qr-code" element={<QRCodePage storeName="My Store" storeAddress="123 Main St" />} />
+        <Route
+          path="/qr-code"
+          element={
+            <QRCodePage storeName="My Store" storeAddress="123 Main St" />
+          }
+        />
       </Route>
     </Routes>
   );

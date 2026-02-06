@@ -57,13 +57,10 @@ export default function ProviderForm({
   );
 
   // Prepare degree options
-  const degrees = degreeData?.data.map(
-    (item: (typeof degreeData)[number]) => ({
-      value: item.name,
-      label: item.name,
-    }),
-  );
-  
+  const degrees = degreeData?.map((item) => ({
+    value: item.name,
+    label: item.name,
+  }));
 
   // Handle image selection
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,4 +1,3 @@
-import React from "react";
 import { Sun, Clock, Building2, Video } from "lucide-react";
 import { Switch } from "@mantine/core";
 import { colors } from "../../../Constants/colors";
@@ -27,7 +26,6 @@ interface ProviderCardProps {
 export default function ProviderCard({
   provider,
   onViewProfile,
-  onManageAvailability,
   onToggleActive,
 }: ProviderCardProps) {
   return (

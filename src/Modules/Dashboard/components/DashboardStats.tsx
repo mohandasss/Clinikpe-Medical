@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 const DashboardStats = () => {
@@ -11,7 +11,7 @@ const DashboardStats = () => {
     <div className="w-full space-y-4">
       {/* Period Selector */}
       <div className="relative">
-        <button 
+        <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg flex items-center justify-between text-gray-600 hover:border-gray-400 transition"
         >

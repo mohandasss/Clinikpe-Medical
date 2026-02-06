@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "@mantine/core";
 import { colors } from "../../Constants/colors";
 import SelectProvider from "./components/SelectProvider";
@@ -68,12 +68,8 @@ const AddAppointment = () => {
           onAppointmentTypeChange={(value) =>
             setFormData({ ...formData, appointmentType: value || "" })
           }
-          onDateChange={(value) =>
-            setFormData({ ...formData, date: value })
-          }
-          onTimeChange={(value) =>
-            setFormData({ ...formData, time: value })
-          }
+          onDateChange={(value) => setFormData({ ...formData, date: value })}
+          onTimeChange={(value) => setFormData({ ...formData, time: value })}
           onPaymentStatusChange={(value) =>
             setFormData({ ...formData, paymentStatus: value || "" })
           }

@@ -1,5 +1,9 @@
 
-export interface SpecialityResponse {
-   uid: string;
+export interface SpecialityItem {
+    uid: string;
     name: string;
+}
+
+export interface SpecialityResponse {
+    data: SpecialityItem[];
 }

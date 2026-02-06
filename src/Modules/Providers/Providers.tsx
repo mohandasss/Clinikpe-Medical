@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Search, Filter, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProviderCard from "./components/ProviderCard";
@@ -51,7 +51,7 @@ const Providers = () => {
   ];
 
   const filteredProviders = providers.filter((provider) =>
-    provider.name.toLowerCase().includes(searchQuery.toLowerCase())
+    provider.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleViewProfile = (id: string) => {
@@ -71,7 +71,10 @@ const Providers = () => {
       {/* Search Bar */}
       <div className="flex gap-2 mb-6">
         <div className="flex-1 relative">
-          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search
+            size={18}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
           <input
             type="text"
             placeholder="Search..."

@@ -1,5 +1,15 @@
-import React from "react";
-import { Building2, MapPin, User, Phone, QrCode, Calendar, HelpCircle, Lock, LogOut, ChevronRight } from "lucide-react";
+import {
+  Building2,
+  MapPin,
+  User,
+  Phone,
+  QrCode,
+  Calendar,
+  HelpCircle,
+  Lock,
+  LogOut,
+  ChevronRight,
+} from "lucide-react";
 import { colors } from "../../../Constants/colors";
 
 interface ProfileData {
@@ -69,7 +79,9 @@ export default function ProfileMenu({
           </div>
           <div>
             <p className="text-xs text-gray-600">Store Name</p>
-            <p className="text-sm font-semibold text-gray-900">{data.storeName}</p>
+            <p className="text-sm font-semibold text-gray-900">
+              {data.storeName}
+            </p>
           </div>
         </div>
 
@@ -83,7 +95,9 @@ export default function ProfileMenu({
           </div>
           <div>
             <p className="text-xs text-gray-600">Location</p>
-            <p className="text-sm font-semibold text-gray-900">{data.location}</p>
+            <p className="text-sm font-semibold text-gray-900">
+              {data.location}
+            </p>
           </div>
         </div>
 
@@ -97,7 +111,9 @@ export default function ProfileMenu({
           </div>
           <div>
             <p className="text-xs text-gray-600">Owner / Manager Name</p>
-            <p className="text-sm font-semibold text-gray-900">{data.ownerName}</p>
+            <p className="text-sm font-semibold text-gray-900">
+              {data.ownerName}
+            </p>
           </div>
         </div>
 
@@ -111,7 +127,9 @@ export default function ProfileMenu({
           </div>
           <div>
             <p className="text-xs text-gray-600">Phone Number</p>
-            <p className="text-sm font-semibold text-gray-900">{data.phoneNumber}</p>
+            <p className="text-sm font-semibold text-gray-900">
+              {data.phoneNumber}
+            </p>
           </div>
         </div>
       </div>

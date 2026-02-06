@@ -14,7 +14,10 @@ interface UseAddProviderOptions {
 
 export function useAddProvider(options?: UseAddProviderOptions) {
     return useMutation({
-        mutationFn: (payload: AddProviderPayload) => addProvider(payload),
+        mutationFn: async (payload: AddProviderPayload) => {
+            const response = await addProvider(payload);
+            return response.data;
+        },
         onSuccess: options?.onSuccess,
         onError: options?.onError,
     });
@@ -27,7 +30,10 @@ interface UseSetAvailabilityOptions {
 
 export function useSetAvailability(options?: UseSetAvailabilityOptions) {
     return useMutation({
-        mutationFn: (payload: SetAvailabilityPayload) => setProviderAvailability(payload),
+        mutationFn: async (payload: SetAvailabilityPayload) => {
+            const response = await setProviderAvailability(payload);
+            return response.data;
+        },
         onSuccess: options?.onSuccess,
         onError: options?.onError,
     });
@@ -40,7 +46,10 @@ interface UseInviteProviderOptions {
 
 export function useInviteProvider(options?: UseInviteProviderOptions) {
     return useMutation({
-        mutationFn: (email: string) => inviteProvider(email),
+        mutationFn: async (email: string) => {
+            const response = await inviteProvider(email);
+            return response.data;
+        },
         onSuccess: options?.onSuccess,
         onError: options?.onError,
     });

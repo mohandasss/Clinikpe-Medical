@@ -1,6 +1,5 @@
 import React from "react";
-import { Select, Button } from "@mantine/core";
-import { colors } from "../../../Constants/colors";
+import { Select } from "@mantine/core";
 
 interface SelectProviderProps {
   selectedProvider: string;
@@ -21,7 +20,11 @@ const SelectProvider: React.FC<SelectProviderProps> = ({
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
       <Select
-        label={<span className="text-sm font-medium text-gray-900">Select Provider <span className="text-red-500">*</span></span>}
+        label={
+          <span className="text-sm font-medium text-gray-900">
+            Select Provider <span className="text-red-500">*</span>
+          </span>
+        }
         placeholder="Choose a provider"
         data={providers}
         value={selectedProvider}

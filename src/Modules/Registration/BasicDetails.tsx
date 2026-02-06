@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, TextInput } from "@mantine/core";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,15 +9,13 @@ import { colors } from "../../Constants/colors";
 const basicDetailsSchema = z.object({
   storeName: z.string().min(1, "Store name is required"),
   ownerName: z.string().min(1, "Owner / Manager name is required"),
-  phoneNumber: z
-    .string()
-    .regex(/^\d{10}$/, "Phone number must be 10 digits"),
+  phoneNumber: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
 });
 
 type BasicDetailsFormValues = z.infer<typeof basicDetailsSchema>;
 
 export default function BasicDetails() {
-  const [address, setAddress] = useState<string | null>(null);
+  const [address] = useState<string | null>(null);
 
   const {
     register,
@@ -71,10 +69,7 @@ export default function BasicDetails() {
 
       <main className="flex-1 flex items-center justify-center w-full">
         {/* Card */}
-        <div
-          className="rounded-lg p-0 w-full max-w-mobile mx-auto flex flex-col"
-         
-        >
+        <div className="rounded-lg p-0 w-full max-w-mobile mx-auto flex flex-col">
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
             <div className="space-y-3">
@@ -182,7 +177,10 @@ export default function BasicDetails() {
                   + Add Address
                 </button>
                 {address && (
-                  <p className="text-xs mt-2" style={{ color: colors.secondary }}>
+                  <p
+                    className="text-xs mt-2"
+                    style={{ color: colors.secondary }}
+                  >
                     {address}
                   </p>
                 )}
@@ -216,7 +214,8 @@ export default function BasicDetails() {
             className="text-xs text-center mt-4 mb-6"
             style={{ color: colors.secondary }}
           >
-            No prescription or patient medical details are shared with medical store.
+            No prescription or patient medical details are shared with medical
+            store.
           </p>
         </div>
       </div>
